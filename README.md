@@ -62,3 +62,68 @@ src/
 └── router/
     └── index.js           # Маршруты
 ```
+
+# Weather App
+
+A web application for viewing weather with authentication and saving favorite cities. Allows you to search for weather by city, view details (temperature, humidity, precipitation, wind), and save cities to a personal list.
+
+**Live site:** https://weather-app-five-bay-60.vercel.app/
+
+## Features
+
+- Registration and login with validation (email, password, city)
+- User profile with the ability to change city
+- Weather search by city name (geocoding via Nominatim)
+- Display current weather: temperature, humidity, precipitation, wind, description, icon
+- Save cities to favorites (tied to user)
+- Data storage in localStorage (simulating a database, backend will be added later)
+- Responsive layout for desktop, tablet, and mobile
+
+## Stack
+
+- **Vue 3** - Frontend
+- **HTML/CSS** - Basic styling
+- **Vue Router** — Routing
+- **Pinia** — State management
+- **Vite** — Build tool
+
+## Used API
+- **Open-Meteo** — weather (no API key required)
+- **Nominatim** — geocoding (converts city name to coordinates)
+
+## Running locally
+
+```bash
+git clone https://github.com/vulkan790/WeatherApp.git
+npm install
+```
+
+Start the dev server:
+
+```bash
+npm run dev
+```
+
+## Structure
+
+```
+src/
+├── main.js                # Entry point
+├── App.vue                # Root component with navigation
+├── style.css              # Global styles and responsiveness
+├── stores/
+│   ├── auth.js            # Pinia store: authentication, registration, profile
+│   └── weather.js         # Pinia store: weather, geocoding, saved cities
+├── pages/                 # Pages
+│   ├── AuthPage.vue       # Login page
+│   ├── RegisterPage.vue   # Registration page
+│   ├── HomePage.vue       # Home page
+│   ├── ProfilePage.vue    # User profile
+│   ├── WeatherPage.vue    # Weather search and display
+│   └── NotFoundPage.vue   # 404 page
+├── components/            # Reusable components
+│   ├── WeatherCard.vue    # Weather card (with slots)
+│   └── SavedCities.vue    # List of saved cities
+└── router/
+    └── index.js           # Routes
+```
