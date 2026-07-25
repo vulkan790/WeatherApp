@@ -1,38 +1,64 @@
-# registration-and-auth
+# Weather App
 
-This template should help get you started developing with Vue 3 in Vite.
+Веб-приложение для просмотра погоды с авторизацией и сохранением избранных городов. Позволяет искать погоду по городу, просматривать детали (температура, влажность, осадки, ветер) и сохранять города в личный список.
 
-## Recommended IDE Setup
+**Рабочий сайт:** https://weather-app-five-bay-60.vercel.app/
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Возможности
 
-## Recommended Browser Setup
+- Регистрация и авторизация с валидацией (email, пароль, город)
+- Профиль пользователя с возможностью изменить город
+- Поиск погоды по названию города (геокодинг через Nominatim)
+- Отображение текущей погоды: температура, влажность, осадки, ветер, описание, иконка
+- Сохранение городов в избранное (привязано к пользователю)
+- Хранение данных в localStorage (имитация базы данных, backend будет добавлен позже)
+- Адаптивная вёрстка для десктопа, планшетов и телефонов
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## Стек
 
-## Customize configuration
+- **Vue 3** - Frontend
+- **HTML/CSS** - Базовая вёрстка
+- **Vue Router** — Маршрутизация
+- **Pinia** — управление состоянием
+- **Vite** — Сборка
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Используемые API
+- **Open-Meteo** — погода (без API-ключа)
+- **Nominatim** — геокодинг (преобразование названия города в координаты)
 
-## Project Setup
+## Запуск локально
 
-```sh
+```bash
+git clone https://github.com/vulkan790/WeatherApp.git
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+Запустите:
 
-```sh
+```bash
 npm run dev
 ```
 
-### Compile and Minify for Production
+## Структура
 
-```sh
-npm run build
+```
+src/
+├── main.js                # Точка входа
+├── App.vue                # Корневой компонент с навигацией
+├── style.css              # Глобальные стили и адаптивность
+├── stores/
+│   ├── auth.js            # Pinia store: авторизация, регистрация, профиль
+│   └── weather.js         # Pinia store: погода, геокодинг, сохранённые города
+├── pages/                 # Страницы
+│   ├── AuthPage.vue       # Страница входа
+│   ├── RegisterPage.vue   # Страница регистрации
+│   ├── HomePage.vue       # Главная страница
+│   ├── ProfilePage.vue    # Профиль пользователя
+│   ├── WeatherPage.vue    # Поиск и отображение погоды
+│   └── NotFoundPage.vue   # Страница 404
+├── components/            # Переиспользуемые компоненты
+│   ├── WeatherCard.vue    # Карточка с погодой (со слотами)
+│   └── SavedCities.vue    # Список сохранённых городов
+└── router/
+    └── index.js           # Маршруты
 ```
