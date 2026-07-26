@@ -18,7 +18,7 @@ defineEmits([
         <ul v-if="cities.length">
             <li v-for="(city, index) in cities" :key="city">
                 <span>{{ index + 1 }}</span>
-                <span @click="$emit('select', city)">{{ city }}</span>
+                <span @click="$emit('select', city)" class="saved-city">{{ city }}</span>
                 <button @click.stop="$emit('remove', city)">X</button>
             </li>
         </ul>
