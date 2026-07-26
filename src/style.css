@@ -624,6 +624,7 @@ body {
 
 .saved-cities li span:last-child:hover {
     color: #667eea;
+    text-decoration: underline;
 }
 
 .saved-cities li button {
