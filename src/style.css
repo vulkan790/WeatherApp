@@ -615,14 +615,14 @@ body {
     color: #999;
 }
 
-.saved-cities li span:last-child {
+.saved-cities li span:last-of-type {
     flex: 1;
     cursor: pointer;
     color: #333;
     transition: color 0.2s;
 }
 
-.saved-cities li span:last-child:hover {
+.saved-cities li span:last-of-type:hover {
     color: #667eea;
     text-decoration: underline;
 }
