@@ -640,6 +640,10 @@ body {
     color: #c82333;
 }
 
+.saved-cities .saved-city: hover {
+    text-decoration: underline;
+}
+
 .saved-cities .empty {
     color: #999;
     text-align: center;
