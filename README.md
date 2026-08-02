@@ -18,13 +18,13 @@
 
 - **Vue 3** - Frontend
 - **HTML/CSS** - Базовая вёрстка
-- **Vue Router** — Маршрутизация
-- **Pinia** — управление состоянием
-- **Vite** — Сборка
+- **Vue Router** - Маршрутизация
+- **Pinia** - управление состоянием
+- **Vite** - Сборка
 
 ## Используемые API
-- **Open-Meteo** — погода (без API-ключа)
-- **Nominatim** — геокодинг (преобразование названия города в координаты)
+- **Open-Meteo** - погода (без API-ключа)
+- **Nominatim** - геокодинг (преобразование названия города в координаты)
 
 ## Запуск локально
 
@@ -83,13 +83,13 @@ A web application for viewing weather with authentication and saving favorite ci
 
 - **Vue 3** - Frontend
 - **HTML/CSS** - Basic styling
-- **Vue Router** — Routing
-- **Pinia** — State management
-- **Vite** — Build tool
+- **Vue Router** - Routing
+- **Pinia** - State management
+- **Vite** - Build tool
 
 ## Used API
-- **Open-Meteo** — weather (no API key required)
-- **Nominatim** — geocoding (converts city name to coordinates)
+- **Open-Meteo** - weather (no API key required)
+- **Nominatim** - geocoding (converts city name to coordinates)
 
 ## Running locally
 
