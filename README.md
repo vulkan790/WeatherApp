@@ -54,7 +54,7 @@ cd backend
 2. **Установите зависимости python**
 
 ```
-pip install fastapi uvicorn sqlalchemy asyncpg python-dotenv passlib[bcrypt] python-jose[cryptography] pydantic[email] greenlet alembic PyJWT uvicorn python-multipart
+pip install fastapi uvicorn sqlalchemy asyncpg alembic python-dotenv python-jose[cryptography] passlib[bcrypt] pydantic[email] python-multipart greenlet
 ```
 
 3. **Создайте файл в корне проекта (внутри WeatherApp/)**
