@@ -70,7 +70,7 @@ const validateForm = () => {
 
     if (!authStore.validatePassword(form.password))
     {
-        errors.password = "Пароль должен содержать минимум 6 символов"
+        errors.password = "Пароль должен содержать минимум 8 символов"
         isValid = false
     }
 

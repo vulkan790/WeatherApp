@@ -1,5 +1,8 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { useAuthStore } from './auth'
+
+const API_URL = "http://localhost:8000"
 
 export const useWeatherStore = defineStore("weather", () => {
     const currentCity = ref("")
@@ -30,37 +33,87 @@ export const useWeatherStore = defineStore("weather", () => {
         }
     }
 
-    const loadSavedCities = (userId) => {
-        const key = `savedCities_${userId}`
-        const data = localStorage.getItem(key)
-        if (data)
+    const loadSavedCities = async () => {
+        const authStore = useAuthStore()
+        if (!authStore.isLoggedIn) 
+            return
+
+        try
         {
-            try 
+            const response = await fetch(`${API_URL}/cities/`, {
+                headers: {
+                    "Authorization": `Bearer ${authStore.token}`
+                }
+            })
+
+            if (!response.ok)
+                throw new Error('Не удалось загрузить города')
+
+            const cities = await response.json()
+            savedCities.value = cities.map(c => c.city_name)
+        }
+        catch (e)
+        {
+            error.value = e.message
+        }
+    }
+
+    const addCity = async (cityName) => {
+        const authStore = useAuthStore()
+        if (!authStore.isLoggedIn) 
+            return
+
+        try
+        {
+            const response = await fetch(`${API_URL}/cities/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authStore.token}`,
+                },
+                body: JSON.stringify({ city_name: cityName })
+            })
+
+            if (!response.ok) 
             {
-                savedCities.value = JSON.parse(data)
+                const data = await response.json()
+                throw new Error(data.detail || 'Не удалось сохранить город')
             }
-            catch {}
+
+            await loadSavedCities()
         }
-        else
-            savedCities.value = []
-    }
-
-    const persistSavedCities = (userId) => {
-        const key = `savedCities_${userId}`
-        localStorage.setItem(key, JSON.stringify(savedCities.value))
-    }
-
-    const addCity = (userId, cityName) => {
-        if (!savedCities.value.includes(cityName))
+        catch (e)
         {
-            savedCities.value.push(cityName)
-            persistSavedCities(userId)
+            error.value = e.message
         }
     }
 
-    const removeCity = (userId, cityName) => {
-        savedCities.value = savedCities.value.filter(c => c !== cityName)
-        persistSavedCities(userId)
+    const removeCity = async (cityName) => {
+        const authStore = useAuthStore()
+        if (!authStore.isLoggedIn) 
+            return
+
+        try
+        {
+            const response = await fetch(`${API_URL}/cities/${encodeURIComponent(cityName)}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${authStore.token}`,
+                }
+            })
+
+            if (!response.ok) 
+            {
+                const data = await response.json()
+                throw new Error(data.detail || 'Не удалось удалить город')
+            }
+
+            await loadSavedCities()
+        }
+        catch (e)
+        {
+            error.value = e.message
+        }
     }
 
     const getWeatherDescription = (code) => {

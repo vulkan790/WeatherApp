@@ -1,18 +1,20 @@
 # Weather App
 
-Веб-приложение для просмотра погоды с авторизацией и сохранением избранных городов. Позволяет искать погоду по городу, просматривать детали (температура, влажность, осадки, ветер) и сохранять города в личный список.
+Веб-приложение для просмотра погоды с авторизацией и сохранением избранных городов. Позволяет искать погоду по городу, просматривать детали (температура, влажность, осадки, ветер) и сохранять города в личный список. Полноценный Full Stack проект с Frontend на vue.js и Backend на FastAPI и PostgreSQL.
 
 **Рабочий сайт:** https://weather-app-five-bay-60.vercel.app/
 
 ## Возможности
 
 - Регистрация и авторизация с валидацией (email, пароль, город)
+- JWT-аутентификация (access + refresh токены)
 - Профиль пользователя с возможностью изменить город
 - Поиск погоды по названию города (геокодинг через Nominatim)
 - Отображение текущей погоды: температура, влажность, осадки, ветер, описание, иконка
 - Сохранение городов в избранное (привязано к пользователю)
-- Хранение данных в localStorage (имитация базы данных, backend будет добавлен позже)
+- Хранение данных в PostgreSQL + localStorage
 - Адаптивная вёрстка для десктопа, планшетов и телефонов
+- REST API с автоматической документацией Swagger
 
 ## Стек
 
@@ -21,25 +23,104 @@
 - **Vue Router** - Маршрутизация
 - **Pinia** - управление состоянием
 - **Vite** - Сборка
+- **FastAPI** - Backend
+- **SQLAlchemy (async)** - ORM для работы с БД
+- **PostgreSQL**- Реляционная база данных
+- **Alembic** - Миграции БД
+- **JWT (PyJWT)** - Аутентификация
+- **passlib (pbkdf2_sha256)** - Хеширование паролей
 
 ## Используемые API
 - **Open-Meteo** - погода (без API-ключа)
 - **Nominatim** - геокодинг (преобразование названия города в координаты)
 
-## Запуск локально
+## Установка и запуск
+
+1) **Клонируйте репозиторий**
 
 ```bash
 git clone https://github.com/vulkan790/WeatherApp.git
 npm install
 ```
 
-Запустите:
+2) **Настройка и запуск бекенда (FastAPI)**
 
-```bash
+1. **Перейдите в папку с Backend**
+
+```
+cd backend
+```
+
+2. **Установите зависимости python**
+
+```
+pip install fastapi uvicorn sqlalchemy asyncpg python-dotenv passlib[bcrypt] python-jose[cryptography] pydantic[email] greenlet alembic PyJWT uvicorn python-multipart
+```
+
+3. **Создайте файл в корне проекта (внутри WeatherApp/)**
+
+```
+cd ..
+```
+
+```env
+SECRET_KEY=секретный_ключ
+С помощью команды в консоли: python -c "import secrets; print(secrets.token_hex(32))" 
+```
+
+4. **Создайте базу данных**
+
+```sql
+CREATE USER weather_user WITH PASSWORD 'xxxxxxxx';
+CREATE DATABASE weather_db OWNER weather_user ENCODING 'UTF-8';
+```
+
+5. **Примените миграции Alembic**
+
+```
+python -m alembic init -t async migrations
+python -m alembic revision --autogenerate -m "Init migrations"
+python -m alembic upgrade head
+```
+
+6. **Запустите сервер FastAPI**
+
+```
+python -m uvicorn backend.main:app --reload
+```
+
+Сервер будет доступен по адресу: http://localhost:8000
+
+7. **Проверьте работу API**
+
+Откройте в браузере: http://localhost:8000/docs Вы увидите интерактивную документацию Swagger UI с описанием всех эндпоинтов.
+
+3) **Настройка и запуск Фронтенда (vue.js)**
+
+1. **Установите зависимости**
+
+```
+cd frontend
+npm install
+```
+
+2. **Запустите в режиме разработки**
+
+```
 npm run dev
 ```
 
+3. **Откройте в браузере**
+
+4. **Сборка для production**
+
+```
+npm run build
+```
+
 ## Структура
+
+Frontend
 
 ```
 src/
@@ -63,67 +144,37 @@ src/
     └── index.js           # Маршруты
 ```
 
-# Weather App
-
-A web application for viewing weather with authentication and saving favorite cities. Allows you to search for weather by city, view details (temperature, humidity, precipitation, wind), and save cities to a personal list.
-
-**Live site:** https://weather-app-five-bay-60.vercel.app/
-
-## Features
-
-- Registration and login with validation (email, password, city)
-- User profile with the ability to change city
-- Weather search by city name (geocoding via Nominatim)
-- Display current weather: temperature, humidity, precipitation, wind, description, icon
-- Save cities to favorites (tied to user)
-- Data storage in localStorage (simulating a database, backend will be added later)
-- Responsive layout for desktop, tablet, and mobile
-
-## Stack
-
-- **Vue 3** - Frontend
-- **HTML/CSS** - Basic styling
-- **Vue Router** - Routing
-- **Pinia** - State management
-- **Vite** - Build tool
-
-## Used API
-- **Open-Meteo** - weather (no API key required)
-- **Nominatim** - geocoding (converts city name to coordinates)
-
-## Running locally
-
-```bash
-git clone https://github.com/vulkan790/WeatherApp.git
-npm install
+Backend
+```
+backend/
+├── __init__.py
+├── main.py                # Точка входа FastAPI
+├── config.py              # Переменные окружения
+├── database.py            # Настройка SQLAlchemy
+├── db_depends.py          # Зависимость для сессии БД
+├── auth.py                # JWT, хеширование, get_current_user
+├── alembic.ini            # Инициализация Alembic
+├── schemas.py             # Pydantic-схемы
+├── models/
+│   ├── __init__.py
+│   ├── user.py            # Модель User
+│   └── saved_city.py      # Модель SavedCity
+├── routers/
+│   ├── __init__.py
+│   ├── users.py           # Регистрация, логин, профиль
+│   └── cities.py          # CRUD избранных городов
+└── migrations/            # Alembic
 ```
 
-Start the dev server:
+## API Эндпоинты
 
-```bash
-npm run dev
-```
-
-## Structure
-
-```
-src/
-├── main.js                # Entry point
-├── App.vue                # Root component with navigation
-├── style.css              # Global styles and responsiveness
-├── stores/
-│   ├── auth.js            # Pinia store: authentication, registration, profile
-│   └── weather.js         # Pinia store: weather, geocoding, saved cities
-├── pages/                 # Pages
-│   ├── AuthPage.vue       # Login page
-│   ├── RegisterPage.vue   # Registration page
-│   ├── HomePage.vue       # Home page
-│   ├── ProfilePage.vue    # User profile
-│   ├── WeatherPage.vue    # Weather search and display
-│   └── NotFoundPage.vue   # 404 page
-├── components/            # Reusable components
-│   ├── WeatherCard.vue    # Weather card (with slots)
-│   └── SavedCities.vue    # List of saved cities
-└── router/
-    └── index.js           # Routes
-```
+| Метод	 |        Эндпоинт	    |           Описание          |
+|--------|----------------------|-----------------------------|
+| GET	 | /users/me	        | Получение профиля           |
+| POST	 | /users/	            | Регистрация                 |
+| POST	 | /users/token	        | Авторизация (OAuth2)        |
+| POST   | /users/refresh-token	| Обновление access_token     |
+| PUT    | /users/me	        | Обновление профиля          |
+| GET    | /cities/  	        | Список сохранённых городов  |
+| POST   | /cities/  	        | Добавить город              |
+| DELETE | /cities/{city_name}  | Удалить город               |

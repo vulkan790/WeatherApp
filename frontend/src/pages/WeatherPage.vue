@@ -23,7 +23,7 @@ const handleSearch = () => {
 
 const handleSave = () => {
     if (weatherStore.weatherData && authStore.user)
-        weatherStore.addCity(authStore.user.id, weatherStore.weatherData.city)
+        weatherStore.addCity(weatherStore.weatherData.city)
 }
 
 const handleSelectSaved = (city) => {
@@ -33,12 +33,12 @@ const handleSelectSaved = (city) => {
 
 const handleRemoveSaved = (city) => {
     if (authStore.user)
-        weatherStore.removeCity(authStore.user.id, city)
+        weatherStore.removeCity(city)
 }
 
 onMounted(() => {
     if (authStore.user)
-        weatherStore.loadSavedCities(authStore.user.id)
+        weatherStore.loadSavedCities()
 })
 </script>
 
