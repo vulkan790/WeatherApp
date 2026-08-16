@@ -1,6 +1,6 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from ..database import Base
+from backend.database import Base
 
 class SavedCity(Base):
     __tablename__ = "saved_cities"
