@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
-const API_URL = "http://localhost:8000"
+const API_URL = "https://weatherapp-ijit.onrender.com"
 
 export const useAuthStore = defineStore("auth", () => {
     const user = ref(null)

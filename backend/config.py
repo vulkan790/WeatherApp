@@ -7,3 +7,4 @@ load_dotenv(dotenv_path=env_path)
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
+DATABASE_URL = os.getenv("DATABASE_URL")

@@ -1,8 +1,7 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.ext.asyncio import *
-
-DATABASE_URL = "postgresql+asyncpg://weather_user:123456789@localhost:5432/weather_db"
+from .config import DATABASE_URL
 
 async_engine = create_async_engine(DATABASE_URL, echo=True)
 async_session_maker = async_sessionmaker(async_engine, expire_on_commit=False, class_=AsyncSession)
