@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
-const API_URL = "https://weatherapp-vrmn.onrender.com"
+const API_URL = import.meta.env.VITE_API_URL || '/api'
 
 export const useAuthStore = defineStore("auth", () => {
     const user = ref(null)
