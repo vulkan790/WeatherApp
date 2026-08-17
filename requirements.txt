@@ -9,3 +9,4 @@ passlib[bcrypt]
 pydantic[email]
 python-multipart
 greenlet
+PyJWT
