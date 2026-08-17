@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useAuthStore } from './auth'
 
-const API_URL = "https://weatherapp-ijit.onrender.com"
+const API_URL = "https://weatherapp-vrmn.onrender.com"
 
 export const useWeatherStore = defineStore("weather", () => {
     const currentCity = ref("")
