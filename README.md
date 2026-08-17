@@ -51,11 +51,7 @@ npm install
 cd backend
 ```
 
-2. **Установите зависимости python**
-
-```
-pip install fastapi uvicorn sqlalchemy asyncpg alembic python-dotenv python-jose[cryptography] passlib[bcrypt] pydantic[email] python-multipart greenlet
-```
+2. **Установите зависимости python из requirements.txt**
 
 3. **Создайте файл в корне проекта (внутри WeatherApp/)**
 
