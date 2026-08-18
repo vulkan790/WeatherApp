@@ -1,6 +1,8 @@
-from fastapi import *
-from fastapi.middleware.cors import *
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from .routers import users_router, cities_router
+from .database import async_engine
+from .models import Base
 
 app = FastAPI(title="FastAPI Погода", version="0.1.0")
 
@@ -14,6 +16,11 @@ app.add_middleware(
 
 app.include_router(users_router)
 app.include_router(cities_router)
+
+@app.on_event("startup")
+async def init_db():
+    async with async_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
 @app.get("/")
 async def root():
