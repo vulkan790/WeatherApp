@@ -6,7 +6,7 @@ import { useAuthStore} from "./stores/auth.js"
 const router = useRouter()
 const authStore = useAuthStore()
 
-OnMounted(async () => {
+onMounted(async () => {
     await authStore.checkAuth()
 })
 
