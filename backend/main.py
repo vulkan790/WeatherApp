@@ -1,8 +1,8 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import *
+from fastapi.middleware.cors import *
 from .routers import users_router, cities_router
-from .database import async_engine
-from backend.models import Base
+from .database import async_engine, Base
+from .models import User, SavedCity
 
 app = FastAPI(title="FastAPI Погода", version="0.1.0")
 
