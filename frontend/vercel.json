@@ -3,6 +3,10 @@
     {
       "source": "/api/(.*)",
       "destination": "https://weatherapp-vrmn.onrender.com/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
