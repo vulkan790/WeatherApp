@@ -174,3 +174,182 @@ backend/
 | GET    | /cities/  	        | Список сохранённых городов  |
 | POST   | /cities/  	        | Добавить город              |
 | DELETE | /cities/{city_name}  | Удалить город               |
+
+---
+
+# Weather App
+
+A web app for viewing the weather, with authentication and saved favorite cities. It lets you search weather by city, view details (temperature, humidity, precipitation, wind), and save cities to a personal list. A complete full-stack project with a Vue.js frontend and a FastAPI + PostgreSQL backend.
+
+**Live site:** https://weather-app-seven-woad.vercel.app/
+
+## Features
+
+- Registration and authentication with validation (email, password, city)
+- JWT authentication (access + refresh tokens)
+- User profile with the ability to change city
+- Weather search by city name (geocoding via Nominatim)
+- Current weather display: temperature, humidity, precipitation, wind, description, icon
+- Saving cities to favorites (tied to the user)
+- Data storage in PostgreSQL + localStorage
+- Responsive layout for desktop, tablets, and phones
+- REST API with automatic Swagger documentation
+
+## Stack
+
+- **Vue 3** - Frontend
+- **HTML/CSS** - Basic layout
+- **Vue Router** - Routing
+- **Pinia** - State management
+- **Vite** - Build tool
+- **FastAPI** - Backend
+- **SQLAlchemy (async)** - ORM for database access
+- **PostgreSQL** - Relational database
+- **Alembic** - Database migrations
+- **JWT (PyJWT)** - Authentication
+- **passlib (pbkdf2_sha256)** - Password hashing
+
+## APIs Used
+- **Open-Meteo** - weather (no API key)
+- **Nominatim** - geocoding (converting a city name into coordinates)
+
+## Installation and Running
+
+1) **Clone the repository**
+
+```bash
+git clone https://github.com/vulkan790/WeatherApp.git
+npm install
+```
+
+2) **Configure and run the backend (FastAPI)**
+
+1. **Go to the Backend folder**
+
+```
+cd backend
+```
+
+2. **Install the Python dependencies from requirements.txt**
+
+3. **Create a file in the project root (inside WeatherApp/)**
+
+```
+cd ..
+```
+
+```env
+SECRET_KEY=secret_key
+Generate it with this console command: python -c "import secrets; print(secrets.token_hex(32))" 
+```
+
+4. **Create the database**
+
+```sql
+CREATE USER weather_user WITH PASSWORD 'xxxxxxxx';
+CREATE DATABASE weather_db OWNER weather_user ENCODING 'UTF-8';
+```
+
+5. **Apply the Alembic migrations**
+
+```
+python -m alembic init -t async migrations
+python -m alembic revision --autogenerate -m "Init migrations"
+python -m alembic upgrade head
+```
+
+6. **Start the FastAPI server**
+
+```
+python -m uvicorn backend.main:app --reload
+```
+
+The server will be available at: http://localhost:8000
+
+7. **Check the API**
+
+Open in your browser: http://localhost:8000/docs — you'll see the interactive Swagger UI documentation describing all endpoints.
+
+3) **Configure and run the frontend (vue.js)**
+
+1. **Install dependencies**
+
+```
+cd frontend
+npm install
+```
+
+2. **Run in development mode**
+
+```
+npm run dev
+```
+
+3. **Open in your browser**
+
+4. **Build for production**
+
+```
+npm run build
+```
+
+## Structure
+
+Frontend
+
+```
+src/
+├── main.js                # Entry point
+├── App.vue                # Root component with navigation
+├── style.css              # Global styles and responsiveness
+├── stores/
+│   ├── auth.js            # Pinia store: authentication, registration, profile
+│   └── weather.js         # Pinia store: weather, geocoding, saved cities
+├── pages/                 # Pages
+│   ├── AuthPage.vue       # Login page
+│   ├── RegisterPage.vue   # Registration page
+│   ├── HomePage.vue       # Home page
+│   ├── ProfilePage.vue    # User profile
+│   ├── WeatherPage.vue    # Weather search and display
+│   └── NotFoundPage.vue   # 404 page
+├── components/            # Reusable components
+│   ├── WeatherCard.vue    # Weather card (with slots)
+│   └── SavedCities.vue    # List of saved cities
+└── router/
+    └── index.js           # Routes
+```
+
+Backend
+```
+backend/
+├── __init__.py
+├── main.py                # FastAPI entry point
+├── config.py              # Environment variables
+├── database.py            # SQLAlchemy setup
+├── db_depends.py          # DB session dependency
+├── auth.py                # JWT, hashing, get_current_user
+├── alembic.ini            # Alembic configuration
+├── schemas.py             # Pydantic schemas
+├── models/
+│   ├── __init__.py
+│   ├── user.py            # User model
+│   └── saved_city.py      # SavedCity model
+├── routers/
+│   ├── __init__.py
+│   ├── users.py           # Registration, login, profile
+│   └── cities.py          # CRUD for favorite cities
+└── migrations/            # Alembic
+```
+
+## API Endpoints
+
+| Method | Endpoint             | Description                 |
+|--------|----------------------|-----------------------------|
+| GET    | /users/me            | Get profile                 |
+| POST   | /users/              | Registration                |
+| POST   | /users/token         | Authentication (OAuth2)     |
+| POST   | /users/refresh-token | Refresh access_token        |
+| PUT    | /users/me            | Update profile              |
+| GET    | /cities/             | List of saved cities        |
+| POST   | /cities/             | Add a city                  |
+| DELETE | /cities/{city_name}  | Delete a city               |
